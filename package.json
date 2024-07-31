@@ -1,5 +1,5 @@
 {
-  "name": "GitlabIntegrationOpenSourceEdition",
+  "name": "gitlab-integration-open-source-edition",
   "version": "0.0.1",
   "dependencies": {
     "@lark-project/js-sdk": "^0.1.6",

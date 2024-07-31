@@ -1,32 +1,11 @@
 # Overview
-This is an example of the Feishu Project Plug-in. The internal code demonstrates the following:
 
-- How to get and display data from js-sdk
+Automate the progression of development milestones in 'Feishu Project' through Gitlab code commits.
 
-- Basic usage examples of each feature, including Board, Button, Config, Control, Dashboard and View
+## Details
 
-- Plug-in configuration information
+After installing the Gitlab open-source plugin, developers can automatically progress related development milestones in 'Feishu Project' through Gitlab code commits.
 
-You can find more information in our Quick Start Guide
+This plugin can be used to associate code branches in GitLab with project requirements in 'Feishu Project'.Once associated, you can view the code branches and their status linked to the requirements in 'Feishu Project'. Additionally, merge requests in GitLab can also trigger the progression of requirement milestones.
 
-## Startup the project
-1. In the project directory, run: `npm start`.
-
-2. Then visit the home page of "Feishu Project · Developer Platform" and enable the local debug mode of the plug-in in the bottom left corner of the page.
-
-3. Finally, open "Feishu Project" and preview the effect of the plug-in.
-
-## Publish your plug-in
-1. Run the `npm run release` command in the terminal to build the product and upload it.
-
-2. Open the corresponding plug-in details page in the "Feishu Project · Developer Platform".
-
-3. Navigate to the "Features" tab on the left side, add corresponding features, and complete the configuration.
-
-4. Navigate to the "Plug-in Release" tab on the left side.
-
-5. Click `New version` to fill in the relevant information, select the corresponding version of product in `Js version` and submit.
-
-6. Back to the "Plug-in Release" page, a new version record will appear, click the "Release" button of this record.
-
-7. Congratulations, you have now successfully released a plug-in, you can go back to the "Feishu Project" plug-in marketplace to install and enjoy using it!
+After installing the plugin, you can customize the milestone progression rules within the Gitlab plugin, which will result in the appearance of GitLab checkpoint fields under the corresponding milestones.
