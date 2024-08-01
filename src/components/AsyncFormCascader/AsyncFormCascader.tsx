@@ -1,11 +1,10 @@
-import { I18n } from '@ies/starling_intl';
 import React, {
   type FC,
   type ComponentProps,
   useState,
   useEffect,
 } from 'react';
-import { Form, Loading } from '@douyinfe/semi-ui';
+import { Form, Spin } from '@douyinfe/semi-ui';
 import type { CascaderData } from '@douyinfe/semi-ui/lib/es/cascader';
 const FormCascader = Form.Cascader;
 
@@ -32,22 +31,14 @@ const AsyncFormCascader: FC<AsyncFormCascaderProps> = (props) => {
       {...rest}
       emptyContent={
         loading ? (
-          <Loading style={{ width: 80 }} tip="" />
+          <Spin style={{ width: 80 }} tip="" />
         ) : (
           <div>
-            {I18n.t(
-              'Meego_Shared_GitlabAssociationGuide_NoDataYet',
-              {},
-              '暂无数据',
-            )}
+            暂无数据
           </div>
         )
       }
-      placeholder={I18n.t(
-        'Meego_Shared_GitlabAssociationGuide_PleaseSelectAWorkItemOrATemplate_PlaceHolder',
-        {},
-        '请选择工作项或模版',
-      )}
+      placeholder="请选择工作项或模版"
       treeData={options}
     />
   );

@@ -7,16 +7,15 @@ import {
   Popconfirm,
 } from '@douyinfe/semi-ui';
 import { isEmpty } from 'Lodash';
-import I18n from '@ies/starling_intl';
 import { getCommonSetting, commonSetting } from '../../api/services';
 import SDK from '@lark-project/js-sdk';
 
 const FormInput = Form.Input;
-const CustomRule = () => {
+const CustomRule = async () => {
   const sdk = new SDK();
 
   const context = await sdk.Context.load();
-const spaceId = context.mainSpace.id;
+  const spaceId = context.mainSpace?.id;
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
 
@@ -82,52 +81,28 @@ const spaceId = context.mainSpace.id;
   return (
     <>
       <Button onClick={showDialog}>
-        {I18n.t(
-          'Meego_Shared_GitlabAssociationGuide_GlobalConfiguration',
-          {},
-          '全局配置'
-        )}
+        全局配置
       </Button>
       <Modal
-        title={I18n.t(
-          'Meego_Shared_GitlabAssociationGuide_WorkItemLinkageConfiguration',
-          {},
-          '工作项联动配置'
-        )}
+        title="工作项联动配置"
         visible={visible}
         onCancel={handleCancel}
         closeOnEsc={true}
         footer={
           <>
             <Popconfirm
-              title={I18n.t(
-                'Meego_Shared_GitlabAssociationGuide_ConfirmResetTitle',
-                {},
-                '确定重置吗？'
-              )}
-              content={I18n.t(
-                'Meego_Shared_GitlabAssociationGuide_ConfirmResetContent',
-                {},
-                '重置后将回到初始状态'
-              )}
+              title="确定重置吗？"
+              content="重置后将回到初始状态"
               onConfirm={() => {
                 handleOk(2);
               }}
             >
               <Button type='primary'>
-                {I18n.t(
-                  'Meego_Shared_GitlabAssociationGuide_CustomRuleButtonReset',
-                  {},
-                  '重置'
-                )}
+                重置
               </Button>
             </Popconfirm>
             <Button type='primary' onClick={() => handleOk()}>
-              {I18n.t(
-                'Meego_Shared_GitlabAssociationGuide_CustomRuleButtonOk',
-                {},
-                '确认'
-              )}
+              确认
             </Button>
           </>
         }
@@ -135,47 +110,23 @@ const spaceId = context.mainSpace.id;
         <Form getFormApi={setFormApi}>
           <FormInput
             field='link_rule'
-            label={I18n.t(
-              'Meego_Shared_GitlabAssociationGuide_CustomPrefix',
-              {},
-              '自定义前缀'
-            )}
-            placeholder={I18n.t(
-              'Meego_Shared_GitlabAssociationGuide_ForExample',
-              {},
-              '例如: link-[0-9]+'
-            )}
+            label="自定义前缀"
+            placeholder="例如: link-[0-9]+"
             rules={[
               {
                 required: true,
-                message: I18n.t(
-                  'Meego_Shared_GitlabAssociationGuide_ThisFieldIsRequired',
-                  {},
-                  '此项必填'
-                ),
+                message: "此项必填",
               },
             ]}
           />
           <FormInput
             field='trigger_key_words'
-            label={I18n.t(
-              'Meego_Shared_GitlabAssociationGuide_DriverKeyword',
-              {},
-              '驱动关键字'
-            )}
-            placeholder={I18n.t(
-              'Meego_Shared_GitlabAssociationGuide_MultipleKeywordsSeparatedByCommas',
-              {},
-              '多个关键字用英文逗号分隔'
-            )}
+            label="驱动关键字"
+            placeholder="多个关键字用英文逗号分隔"
             rules={[
               {
                 required: true,
-                message: I18n.t(
-                  'Meego_Shared_GitlabAssociationGuide_ThisFieldIsRequired',
-                  {},
-                  '此项必填'
-                ),
+                message: "此项必填",
               },
             ]}
           />
