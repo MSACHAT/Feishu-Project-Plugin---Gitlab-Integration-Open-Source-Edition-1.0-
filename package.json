@@ -2,8 +2,9 @@
   "name": "gitlab-integration-open-source-edition",
   "version": "0.0.1",
   "dependencies": {
-    "@lark-project/js-sdk": "^0.1.6",
+    "@douyinfe/semi-icons": "^2.63.1",
     "@douyinfe/semi-ui": "2.25.4",
+    "@lark-project/js-sdk": "^0.1.6",
     "axios": "^0.21.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
