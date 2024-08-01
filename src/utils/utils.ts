@@ -19,3 +19,9 @@ export async function copyText(text: string) {
     }
   }
 }
+
+export const getHref = async () => {
+  const sdk = await sdkManager.getSdkInstance();
+  const href = await sdk.navigation.getHref();
+  return new URL(href);
+};
