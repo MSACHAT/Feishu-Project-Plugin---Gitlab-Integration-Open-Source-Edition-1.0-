@@ -5,7 +5,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { MeegoFormCascader, MeegoLoading } from 'MeegoComponent';
+import { FormCascader, Loading } from 'Component';
 import type { CascaderData } from '@douyinfe/semi-ui/lib/es/cascader';
 import type { Form } from '@douyinfe/semi-ui';
 
@@ -28,11 +28,11 @@ const AsyncFormCascader: FC<AsyncFormCascaderProps> = (props) => {
   }, [fetchData]);
 
   return (
-    <MeegoFormCascader
+    <FormCascader
       {...rest}
       emptyContent={
         loading ? (
-          <MeegoLoading style={{ width: 80 }} tip="" />
+          <Loading style={{ width: 80 }} tip="" />
         ) : (
           <div>
             {I18n.t(

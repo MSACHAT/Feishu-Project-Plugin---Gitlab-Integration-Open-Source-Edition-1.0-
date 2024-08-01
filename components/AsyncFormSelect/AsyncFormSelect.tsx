@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { MeegoFormSelect } from 'MeegoComponent';
+import { Select } from 'Component';
 import type { OptionProps } from '@douyinfe/semi-ui/lib/es/select';
 import type { Form } from '@douyinfe/semi-ui';
 
@@ -26,7 +26,7 @@ const AsyncFormSelect: FC<AsyncFormSelectProps> = (props) => {
       });
   }, [fetchData]);
 
-  return <MeegoFormSelect {...rest} loading={loading} optionList={options} />;
+  return <Select {...rest} loading={loading} optionList={options} />;
 };
 
 export default AsyncFormSelect;

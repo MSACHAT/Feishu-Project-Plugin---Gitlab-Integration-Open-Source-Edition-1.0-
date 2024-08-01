@@ -21,7 +21,7 @@ declare module '@ies/semi-ui-react';
 declare module '@meego/MeegoCdkDefinitions';
 declare module 'BasePlugin';
 declare module 'DetectInvalidValue';
-declare module 'MeegoComponent';
+declare module 'Component';
 declare module 'SemiIcons';
 declare module 'SemiUiReact';
 declare module 'MeegoPingere';
