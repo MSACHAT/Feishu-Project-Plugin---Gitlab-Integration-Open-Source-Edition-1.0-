@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { Select } from 'Component';
+import { Select } from '@douyinfe/semi-ui';
 import type { OptionProps } from '@douyinfe/semi-ui/lib/es/select';
 import type { Form } from '@douyinfe/semi-ui';
 

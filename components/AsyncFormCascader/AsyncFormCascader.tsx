@@ -5,9 +5,9 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { FormCascader, Loading } from 'Component';
+import { Form, Loading } from '@douyinfe/semi-ui';
 import type { CascaderData } from '@douyinfe/semi-ui/lib/es/cascader';
-import type { Form } from '@douyinfe/semi-ui';
+const FormCascader = Form.Cascader;
 
 export type AsyncFormCascaderProps = ComponentProps<typeof Form.Cascader> & {
   fetchData: () => Promise<CascaderData[]>;
