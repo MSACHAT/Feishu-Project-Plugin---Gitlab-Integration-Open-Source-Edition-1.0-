@@ -8,15 +8,14 @@ import {
 } from '@douyinfe/semi-ui';
 import { isEmpty } from 'Lodash';
 import { getCommonSetting, commonSetting } from '../../api/service';
+import useSdkContext from '../../hooks/useSdkContext';
 
-import { sdkManager } from '../../utils';
 
+const { mainSpace } = useSdkContext() || {};
+const spaceId = mainSpace?.id ?? '';
 const FormInput = Form.Input;
-const CustomRule = async () => {
-  const sdk = await sdkManager.getSdkInstance();
+const CustomRule = () => {
 
-  const context = await sdk.Context.load();
-  const spaceId = context.mainSpace?.id|| '';
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
 
