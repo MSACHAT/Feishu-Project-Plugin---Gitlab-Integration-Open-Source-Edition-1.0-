@@ -9,13 +9,15 @@ import {
   Row,
   Col,
   Typography,
-  Tag,
+  Tag, Toast,
 } from '@douyinfe/semi-ui';
 import { IconSearch, IconInfoCircle, IconTick } from '@douyinfe/semi-icons';
 import enterSvg from '../../assert/enter.svg';
 import { ConfigContext } from '../../context/configContext';
-import { fetchAddRepo, fetchDelRepo } from '../../api/services';
-import { getProjectKey } from '../../utils';
+import { fetchAddRepo, fetchDelRepo } from '../../api/service';
+import useSdkContext from '../../hooks/useSdkContext';
+
+const context = useSdkContext();
 
 const {Text}= Typography;
 
@@ -31,7 +33,7 @@ const renderSearchInput = (
   const addSelectValue = (keys: string[]) => {
     onChange([...new Set((value || []).concat(keys))].map((key) => key));
   };
-  const spaceId = getProjectKey();
+  const spaceId = context?.mainSpace?.id;
   const addRepository = (keys: string[]) => {
     const repositoriesKey = (repositories || []).map(
       (item) => item.path_with_namespace
@@ -40,7 +42,7 @@ const renderSearchInput = (
       .filter((key) => !repositoriesKey.includes(key))
       .map((key) => ({ path_with_namespace: key }));
     if (repos.length > 0) {
-      fetchAddRepo(spaceId, [...repos]);
+      fetchAddRepo(spaceId?spaceId:Toast.error("获取空间ID失败，请刷新重试"), [...repos]);
       // store.setRepositories([...repos.reverse()].concat(repositories));
       setRepo([...repos.reverse()].concat(repositories));
       setUpdate(Number(new Date()));
@@ -83,7 +85,7 @@ const renderOptions = (options, value, onChange, setRepo) => {
   const deleteRepos = (e, index: number) => {
     e?.stopPropagation();
     fetchDelRepo(
-      getProjectKey(),
+      context?.mainSpace?.id ? context?.mainSpace?.id : Toast.error("获取空间ID失败，请刷新重试"),
       options[index]?.path_with_namespace || ''
     ).then((res) => {
       options.splice(index, 1);

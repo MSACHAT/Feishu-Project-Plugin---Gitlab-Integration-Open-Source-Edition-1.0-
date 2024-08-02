@@ -91,22 +91,21 @@ function ConfigList<T extends Record<string, any>>(
           emptyContent={
             <Empty
               style={{ marginTop: '10vh' }}
-              size='large'
-              type={'noData'}
+              // size='large'
+              // type={'noData'}
               title={'暂无数据'}
-              content={
-                <Text>
-                  {"请先添加规则，然后再操作"}
-                  <Text
-                    style={{ marginLeft: 4 }}
-                    link
-                    onClick={onClickAdd}
-                  >
-                    {addBtnText}
-                  </Text>
+            >
+              <Text>
+                {"请先添加规则，然后再操作"}
+                <Text
+                  style={{ marginLeft: 4 }}
+                  link
+                  onClick={onClickAdd}
+                >
+                  {addBtnText}
                 </Text>
-              }
-            />
+              </Text>
+            </Empty>
           }
           {...rest}
         />
