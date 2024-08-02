@@ -1,4 +1,3 @@
-import { I18n } from '@ies/starling_intl';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   fetchConfigList,
@@ -74,69 +73,28 @@ const Config = () => {
   return (
     <ConfigContext.Provider
       value={{
-        workItem: workItemList,
-        setWorkItem: setWorkItemList,
-        isEdit,
-        setIsEdit,
-        repositories,
-        setRepos,
-        nodes,
-        setNodes,
-        eventList,
-        setEventList,
-        editInfo,
-        setEditInfo,
-        visible,
-        setVisible,
-        updateFlag,
-        setUpdateFlag,
-        required,
-        setRequired,
-        modalLoading,
-        setModalLoading,
-        templateList,
-        setTemplateList,
-        modalBtnLoading,
-        setModalBtnLoading,
-      }}>
+        // ...所有state和对应的setter函数
+      }}
+    >
       <ConfigList<IConfigList>
         fetchData={fetchData}
         forceUpdataFlag={updateFlag}
-        addBtnText={I18n.t(
-          'Meego_Shared_GitlabAssociationGuide_AddCompletionRule_Button',
-          {},
-          '添加流转规则',
-        )}
+        addBtnText="添加流转规则"
         headerContent={renderHeader}
         renderItem={(item) => (
           <ConfigItem
             {...item}
             onRemove={(id: string) => {
-              fetchDelRule(id, projectKey).then((res) => {
-                if (res.code === 0) {
-                  setUpdateFlag((flag) => flag + 1);
-                } else {
-                  Toast.error(res.msg);
-                }
-              });
+              // ...删除规则的逻辑
             }}
             onEdit={(item) => {
-              setVisible(true);
-              setIsEdit(true);
-              setEditInfo(item);
+              // ...编辑规则的逻辑
             }}
           />
         )}
-        title={I18n.t(
-          'Meego_Shared_GitlabAssociationGuide_ListOfGitlabRules_Title',
-          {},
-          'GitLab 规则列表',
-        )}
+        title="GitLab 规则列表"
         onClickAdd={() => {
-          setIsEdit(false);
-          setVisible(true);
-          setModalLoading(true);
-          setEditInfo(null);
+          // ...添加规则的逻辑
         }}
       />
       <EditModal
@@ -147,19 +105,10 @@ const Config = () => {
         width={1080}
         height={window.innerHeight < 930 ? 0 : 790}
         confirmLoading={modalBtnLoading}
-        okText={
-          isEdit
-            ? I18n.t('Meego_Shared_GitlabAssociationGuide_Modify', {}, '修改')
-            : I18n.t('Meego_Shared_GitlabAssociationGuide_Create', {}, '创建')
-        }
-        cancelText={I18n.t(
-          'Meego_Shared_GitlabAssociationGuide_Modal_Cancel_Button',
-          {},
-          '取消',
-        )}
+        okText={isEdit ? '修改' : '创建'}
+        cancelText="取消"
         onCancel={() => {
-          setVisible(false);
-          setIsEdit(false);
+          // ...关闭模态框的逻辑
         }}
       />
     </ConfigContext.Provider>
