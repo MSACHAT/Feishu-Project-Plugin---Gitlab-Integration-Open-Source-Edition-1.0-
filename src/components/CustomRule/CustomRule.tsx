@@ -7,15 +7,16 @@ import {
   Popconfirm,
 } from '@douyinfe/semi-ui';
 import { isEmpty } from 'Lodash';
-import { getCommonSetting, commonSetting } from '../../api/services';
-import SDK from '@lark-project/js-sdk';
+import { getCommonSetting, commonSetting } from '../../api/service';
+
+import { sdkManager } from '../../utils';
 
 const FormInput = Form.Input;
 const CustomRule = async () => {
-  const sdk = new SDK();
+  const sdk = await sdkManager.getSdkInstance();
 
   const context = await sdk.Context.load();
-  const spaceId = context.mainSpace?.id;
+  const spaceId = context.mainSpace?.id|| '';
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
 
