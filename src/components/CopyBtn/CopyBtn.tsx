@@ -4,12 +4,10 @@ import { Tooltip, Button, Toast } from '@douyinfe/semi-ui';
 import useSdkContext from '../../hooks/useSdkContext';
 import { fetchSignature } from '../../api/service';
 import { copyText, getHref } from '../../utils/utils';
-import { sdkManager } from '../../utils';
 
 export async function CopyBtn() {
-  const sdk = await sdkManager.getSdkInstance();
-  const { activeWorkItem } = useSdkContext() || {};
-  const spaceId = activeWorkItem?.spaceId ?? '';
+  const { mainSpace } = useSdkContext() || {};
+  const spaceId = mainSpace?.id ?? '';
 
   const [signature, setSignature] = useState<string | null>(null);
 
@@ -38,7 +36,8 @@ export async function CopyBtn() {
             );
           } else {
             setSignature(null);
-            sdk.toast.error('获取 token 失败');
+
+            Toast.error({ content: '获取 token 失败' });
           }
         }}
       >

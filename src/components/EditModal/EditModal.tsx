@@ -1,16 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { useContext, useEffect, useRef, type FC, useState } from 'react';
-import {
-  Modal,
-  Form,
-  Row,
-  Col,
-  Card,
-  Tooltip,
-  Toast,
-  Spin,
-  Typography,
-} from '@douyinfe/semi-ui';
+import { Modal, Form, Row, Col, Card, Tooltip, Toast, Spin, Typography } from '@douyinfe/semi-ui';
 import type { ModalReactProps } from '@douyinfe/semi-ui/lib/es/modal';
 import WorkTypeSelect from './WorkTypeSelect';
 import { getHelpDocumentHref, getProjectKey } from '../../utils';
@@ -18,18 +8,16 @@ import { IconInfoCircle, IconLink } from 'SemiIcons';
 import RuleList from './RuleList';
 import { isEmpty } from 'Lodash';
 import { ConfigContext } from '../../context/configContext';
-import { fetchAddRules } from '../../api/services';
+import { fetchAddRules } from '../../api/service';
 import { FormApi } from '@douyinfe/semi-ui/lib/es/form';
 
-const { Title:SemiTitle, Text } = Typography;
+const { Title: SemiTitle, Text } = Typography;
 
 const createParams = (workItem, values, eventList, nodes, spaceId) => {
   const [workItemId, tempId] = values.name;
   const { rules } = values;
-  const selectWorkItem = workItem.find((item) => item.value === workItemId);
-  const selectTemp = selectWorkItem.children.find(
-    (item) => item.value === tempId,
-  );
+  const selectWorkItem = workItem.find(item => item.value === workItemId);
+  const selectTemp = selectWorkItem.children.find(item => item.value === tempId);
   const prefix = 'GitLab 关联';
   const title = `${prefix} ${selectWorkItem.label} -> ${selectTemp.label}`;
   const template = {
@@ -42,16 +30,16 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
     key: selectWorkItem.value,
     name: selectWorkItem.label,
   };
-  const forward = rules.map((rule) => {
-    const repositories = rule.repo.map((repo) => ({
+  const forward = rules.map(rule => {
+    const repositories = rule.repo.map(repo => ({
       path_with_namespace: repo,
     }));
-    const source = eventList.find((item) => item.key === rule.event);
+    const source = eventList.find(item => item.key === rule.event);
     const nodesValue = rule.nodes;
     const control_level = !rule.must ? 2 : 1;
     const targets = rule.nodes
-      .map((item) => nodes.find((node) => item === node.value))
-      ?.map((target) => ({ key: target.value, name: target.label }));
+      .map(item => nodes.find(node => item === node.value))
+      ?.map(target => ({ key: target.value, name: target.label }));
     const messages = {
       source: '',
       target: '',
@@ -76,7 +64,7 @@ const createParams = (workItem, values, eventList, nodes, spaceId) => {
   };
 };
 
-const renderHeader = (required) => (
+const renderHeader = required => (
   <Row gutter={8} type={'flex'} align={'middle'}>
     <Col span={14}>
       <SemiTitle heading={6}>GitLab</SemiTitle>
@@ -84,19 +72,17 @@ const renderHeader = (required) => (
     <Col span={10}>
       <Row gutter={8} type={'flex'} align={'middle'}>
         <Col span={14}>
-          <SemiTitle heading={6}>
-            {'飞书项目'}
-          </SemiTitle>
+          <SemiTitle heading={6}>{'飞书项目'}</SemiTitle>
         </Col>
         <Col span={8}>
           {required ? (
             <Title heading={6}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span>
-                  {'必填模式'}
-                </span>
+                <span>{'必填模式'}</span>
                 <Tooltip
-                  content={'打开必填模式后，将为该节点增设必填字段，仅在 GitLab 信号流入后节点才可流转'}
+                  content={
+                    '打开必填模式后，将为该节点增设必填字段，仅在 GitLab 信号流入后节点才可流转'
+                  }
                 >
                   <IconInfoCircle />
                 </Tooltip>
@@ -109,7 +95,7 @@ const renderHeader = (required) => (
   </Row>
 );
 
-const Title = (props) => (
+const Title = props => (
   <div
     style={{
       display: 'flex',
@@ -118,20 +104,14 @@ const Title = (props) => (
       paddingRight: 12,
     }}
   >
-    <div>
-      {'GitLab 关联'}
-    </div>
-    <Text
-      link={{ href: props.href, target: '_blank' }}
-      icon={<IconLink />}
-      underline
-    >
+    <div>{'GitLab 关联'}</div>
+    <Text link={{ href: props.href, target: '_blank' }} icon={<IconLink />} underline>
       {'查看帮助文档'}
     </Text>
   </div>
 );
 
-const EditModal: FC<ModalReactProps> = (props) => {
+const EditModal: FC<ModalReactProps> = props => {
   const formRef = useRef<Form>(null);
   const { visible, ...rest } = props;
   const [href, setHref] = useState('');
@@ -156,27 +136,21 @@ const EditModal: FC<ModalReactProps> = (props) => {
     if (isEmpty(errorInfo)) {
       setModalBtnLoading(true);
       const values = formApi.getValues();
-      const rules: any = createParams(
-        workItem,
-        values,
-        eventList,
-        nodes,
-        spaceId,
-      );
+      const rules: any = createParams(workItem, values, eventList, nodes, spaceId);
       if (isEdit && editInfo) {
         rules.id = editInfo.id;
       }
       fetchAddRules(rules)
-        .then((res) => {
+        .then(res => {
           if (res.code === 0) {
             // MeegoToast.success(isEdit ? '修改成功' : '添加成功');
             setVisible(false);
-            setUpdateFlag((prev) => prev + 1);
+            setUpdateFlag(prev => prev + 1);
           } else {
             Toast.error(res.msg);
           }
         })
-        .catch((e) => Toast.error(e))
+        .catch(e => Toast.error(e))
         .finally(() => setModalBtnLoading(false));
     }
   };
@@ -188,10 +162,10 @@ const EditModal: FC<ModalReactProps> = (props) => {
       formApi.setValue('name', [work_item_type.key, template.id]);
       formApi.setValue(
         'rules',
-        forward.map((item) => ({
-          repo: item.repositories.map((repo) => repo.path_with_namespace),
+        forward.map(item => ({
+          repo: item.repositories.map(repo => repo.path_with_namespace),
           event: item.source.key,
-          nodes: item.targets.map((repo) => repo.key),
+          nodes: item.targets.map(repo => repo.key),
           must: item.control_level === 1,
         })),
       );
@@ -205,18 +179,13 @@ const EditModal: FC<ModalReactProps> = (props) => {
   }, [visible, editInfo, formApi]);
 
   useEffect(() => {
-    getHelpDocumentHref().then((url) => {
+    getHelpDocumentHref().then(url => {
       setHref(url);
     });
   }, []);
 
   return (
-    <Modal
-      {...rest}
-      onOk={createRule}
-      visible={visible}
-      title={<Title href={href} />}
-    >
+    <Modal {...rest} onOk={createRule} visible={visible} title={<Title href={href} />}>
       <Spin tip="" spinning={modalLoading}>
         <Form
           ref={formRef}
@@ -233,17 +202,14 @@ const EditModal: FC<ModalReactProps> = (props) => {
                     rules={[
                       {
                         required: true,
-                        message:
-                          '请选择工作项类型',
+                        message: '请选择工作项类型',
                       },
                     ]}
                   />
                 </Col>
               </Row>
               <Row style={{ marginBottom: 12 }}>
-                <Text>
-                  {`设置 GitLab 操作事件与飞书项目工作项节点的映射关系：`}
-                </Text>
+                <Text>{`设置 GitLab 操作事件与飞书项目工作项节点的映射关系：`}</Text>
               </Row>
               <Card title={renderHeader(required)}>
                 <RuleList values={values} />
