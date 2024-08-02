@@ -5,7 +5,7 @@ import useSdkContext from '../../hooks/useSdkContext';
 import { fetchSignature } from '../../api/service';
 import { copyText, getHref } from '../../utils/utils';
 
-export async function CopyBtn() {
+export default function CopyBtn() {
   const { mainSpace } = useSdkContext() || {};
   const spaceId = mainSpace?.id ?? '';
 

@@ -13,12 +13,15 @@ import ConfigItem from '../../components/ConfigList/ConfigItem';
 import CopyBtn from '../../components/CopyBtn/CopyBtn';
 import EditModal from '../../components/EditModal/EditModal';
 import { ConfigContext } from '../../context/configContext';
-import { getProjectKey, isInternal } from '../../utils/utils';
+
 import { Toast } from '@douyinfe/semi-ui';
 import CustomRule from '../../components/CustomRule/CustomRule';
+import useSdkContext from '../../hooks/useSdkContext';
 
 const Config = () => {
-  const projectKey = getProjectKey();
+  const { mainSpace } = useSdkContext() || {};
+  const projectKey = mainSpace?.id ?? '';
+
   const [visible, setVisible] = useState(false); // 是否显示modal
   const [isEdit, setIsEdit] = useState(false); // 是否为修改
   const [repositories, setRepos] = useState<Array<IRepos>>([]); // 仓库列表
@@ -46,12 +49,6 @@ const Config = () => {
     });
   }, [projectKey]);
 
-  useEffect(() => {
-    // TODO 这里判断了内外网环境
-    isInternal().then((res) => {
-      setInternal(res);
-    });
-  }, []);
 
   const renderHeader = useMemo(
     () => (
@@ -73,7 +70,30 @@ const Config = () => {
   return (
     <ConfigContext.Provider
       value={{
-        // ...所有state和对应的setter函数
+        workItem: workItemList,
+        setWorkItem: setWorkItemList,
+        isEdit,
+        setIsEdit,
+        repositories,
+        setRepos,
+        nodes,
+        setNodes,
+        eventList,
+        setEventList,
+        editInfo,
+        setEditInfo,
+        visible,
+        setVisible,
+        updateFlag,
+        setUpdateFlag,
+        required,
+        setRequired,
+        modalLoading,
+        setModalLoading,
+        templateList,
+        setTemplateList,
+        modalBtnLoading,
+        setModalBtnLoading,
       }}
     >
       <ConfigList<IConfigList>

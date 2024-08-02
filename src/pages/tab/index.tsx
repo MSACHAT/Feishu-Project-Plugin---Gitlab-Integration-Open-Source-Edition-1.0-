@@ -1,4 +1,3 @@
-// TODO 这个是国际化相关可以忽略
 
 import React, {
   useState,
@@ -24,6 +23,7 @@ import { IconLink, IconTreeTriangleRight } from '@douyinfe/semi-icons';
 
 // TODO: logEvent也可以忽略
 import { APP_KEY } from '../../constants';
+import useSdkContext from '../../hooks/useSdkContext';
 
 enum ITabType {
   MR = 1,
@@ -136,7 +136,8 @@ const getWorkItemIdFormUrl = () => {
 
 const GitLabTabCom = () => {
   const [bindings, setBindings] = useState<any>([]);
-  const { _id: project_key = '' } = stores?.projectStore?.currentProject;
+  const { mainSpace } = useSdkContext() || {};
+  const project_key = mainSpace?.id ?? '';
   const workitem_id = getWorkItemIdFormUrl();
   const [loading, setLoading] = useState(false);
   const [inited, setInited] = useState(false);
@@ -150,7 +151,6 @@ const GitLabTabCom = () => {
         id,
       })
         .then((res) => {
-          logEvent('detail_main_page_tab_click', { click: 'disconnect' });
           getBindings({ project_key, workitem_id })
             .then((res) => {
               if (res.data) {
@@ -164,12 +164,7 @@ const GitLabTabCom = () => {
         .catch((e) => {
           setLoading(false);
           Toast.error(
-            e.message ||
-              I18n.t(
-                'Meego_Shared_GitlabAssociationGuide_RequestFailedPleaseTryAgainLater',
-                {},
-                '请求失败，请稍后重试',
-              ),
+            e.message ||'请求失败，请稍后重试',
           );
         });
     },
@@ -255,7 +250,7 @@ const GitLabTabCom = () => {
     {
       width: 65,
       dataIndex: 'deletable',
-      fixed: bindings['merge_request']?.length > 0 ? 'right' : false,
+      // fixed: bindings['merge_request']?.length > 0 ? 'right' : undefined,
       render: (val, record) => (
         <Typography.Text
           className="action"
@@ -309,7 +304,7 @@ const GitLabTabCom = () => {
     {
       width: 65,
       dataIndex: 'deletable',
-      fixed: bindings.commit?.length > 0 ? 'right' : false,
+      // fixed: bindings.commit?.length > 0 ? 'right' : false,
       render: (val, record) => (
         <Typography.Text
           className="action"
@@ -347,7 +342,7 @@ const GitLabTabCom = () => {
     {
       width: 65,
       dataIndex: 'deletable',
-      fixed: bindings.branch?.length > 0 ? 'right' : false,
+      // fixed: bindings.branch?.length > 0 ? 'right' : false,
       render: (val, record) => (
         <Typography.Text
           className="action"
@@ -493,7 +488,7 @@ const GitLabTabCom = () => {
                   dataSource={bindings['merge_request']}
                   scroll={{
                     x:
-                      bindings['merge_request']?.length > 0 && Utils.isExternal
+                      bindings['merge_request']?.length > 0
                         ? '105%'
                         : '100%',
                   }}
@@ -512,7 +507,6 @@ const GitLabTabCom = () => {
                   bordered
                   columns={
                     RenderCommitTable
-                     
                   }
                   dataSource={bindings?.commit}
                   scroll={{
@@ -558,3 +552,7 @@ const GitLabTabCom = () => {
   );
 };
 export default GitLabTabCom;
+function bruteTranslate(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
