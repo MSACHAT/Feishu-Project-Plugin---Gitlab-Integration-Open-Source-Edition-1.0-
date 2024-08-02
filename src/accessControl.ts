@@ -1,22 +1,81 @@
 // Get the login status of the plug-in
+
+import { authAgree } from './api';
+import { isVisible } from './api/service';
+import { APP_KEY } from './constants';
+import useSdkContext from './hooks/useSdkContext';
+import { sdkManager } from './utils';
+
 // If return false, will call the function `authorize` with a code
-export function isLogin() {
+export function isLogin(): boolean {
+  const token: string | null = localStorage.getItem(`${APP_KEY}_token`);
+  const expireTimeStr: string | null = localStorage.getItem(`${APP_KEY}_expire_time`);
+
+  if (!token || !expireTimeStr) {
+    return false;
+  }
+
+  const expireTime: number = Number(expireTimeStr);
+  if (isNaN(expireTime) || expireTime - Date.now() <= 0) {
+    return false;
+  }
+
   return true;
 }
 
-// Identity authentication
-export function authorize(code) {
+export const authorize = async (code: string): Promise<boolean> => {
+  const sdk = await sdkManager.getSdkInstance();
+  /**
+   * authAgree 为服务端提供的code换token的接口
+   * 拿到token后存储到缓存中
+   */
   return new Promise((resolve, reject) => {
-    resolve(true);
-  });
-}
+    // 可以直接resolve表示无需鉴权
+    // resolve(true);
+    authAgree(code)
+      .then(async res => {
+        const { token, expire_time } = res.data;
+        // expire_time示例值 7200 秒，这里累加当前时间，再减去五分钟，作为最终失效时间
 
-export const visibilityControl = async (type, key) => {
+        await sdk.storage.setItem(`${APP_KEY}_token`, token);
+        // 前端比后端的过期时间早五分钟
+
+        await sdk.storage.setItem(
+          `${APP_KEY}_expire_time`,
+          (Number(expire_time) * 1000 + Date.now() - 300000).toString(),
+        );
+      })
+      .catch(error => {
+        console.log(error);
+        reject(false);
+      });
+  });
+};
+
+export const visibilityControl = (type, key) => {
   return new Promise((resolve, reject) => {
     if (type === 'DASHBOARD') {
-      resolve(true);
-    } else {
-      resolve(true);
+      // resolve(true);
+      const ctx = useSdkContext();
+      const project_key = ctx?.mainSpace?.id || '';
+      const work_item_id = ctx?.activeWorkItem?.id || 0;
+      const work_item_type_key = ctx?.activeWorkItem?.workObjectId || '';
+      if (work_item_id && work_item_type_key) {
+        isVisible({
+          project_key,
+          work_item_id,
+          work_item_type_key,
+        })
+          .then(res => {
+            if (res.data?.is_visbile) resolve(true);
+            else resolve(false);
+          })
+          .catch(() => {
+            resolve(false);
+          });
+      } else {
+        resolve(false);
+      }
     }
   });
 };
