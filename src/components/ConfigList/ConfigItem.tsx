@@ -1,18 +1,11 @@
 import React, { type FC, useEffect, useState } from 'react';
-import {
-  Popconfirm,
-  Card,
-  Row,
-  Switch,
-  Space,
-  Typography,
-} from '@douyinfe/semi-ui';
+import { Popconfirm, Card, Row, Switch, Space, Typography } from '@douyinfe/semi-ui';
 
 import { IconDelete, IconGitlabLogo } from '@douyinfe/semi-icons';
 import rightArrow from '../../assert/right_arrow.svg';
 import logo from '../../assert/logo_meego.png';
-import { enableRule, type IConfigList } from '../../api/services';
-
+import { enableRule } from '../../api/service';
+import { IConfigList } from '../../api/types';
 const { Title } = Typography;
 
 const iconsWrapStyle = {
@@ -34,10 +27,10 @@ const iconsStyle = {
 
 const ConfigItem: FC<
   IConfigList & {
-  onRemove: (id: string) => void;
-  onEdit: (IConfigList) => void;
-}
-> = (props) => {
+    onRemove: (id: string) => void;
+    onEdit: (IConfigList) => void;
+  }
+> = props => {
   const { onRemove, onEdit, ...rest } = props;
   const [invalid, setInvalid] = useState(false);
   const [title, setTitle] = useState('');
@@ -55,26 +48,23 @@ const ConfigItem: FC<
 
   const Icons = ({ icon }) => (
     <div style={iconsWrapStyle}>
-      <img
-        src={icon}
-        style={{ ...iconsStyle, filter: invalid ? 'grayscale(100%)' : 'none' }}
-      />
+      <img src={icon} style={{ ...iconsStyle, filter: invalid ? 'grayscale(100%)' : 'none' }} />
     </div>
   );
 
   return (
     // TODO:由于Card没有onClick,就提到外面来了，记得检查是否可用
-    <div onClick={() => {
-      !invalid && onEdit(rest);
-    }}>
+    <div
+      onClick={() => {
+        !invalid && onEdit(rest);
+      }}
+    >
       <Card
         shadows={invalid ? undefined : 'hover'}
         style={{
           marginBottom: 16,
           position: 'relative',
-          background: invalid
-            ? 'var(--semi-color-fill-0)'
-            : 'var(--semi-color-bg-0)',
+          background: invalid ? 'var(--semi-color-fill-0)' : 'var(--semi-color-bg-0)',
         }}
         title={
           <div
@@ -89,10 +79,7 @@ const ConfigItem: FC<
               <div style={iconsWrapStyle}>
                 <IconGitlabLogo size="extra-large" />
               </div>
-              <div
-                style={{ margin: 'auto 10px auto 10px' }}
-                className="flex-hor-center"
-              >
+              <div style={{ margin: 'auto 10px auto 10px' }} className="flex-hor-center">
                 <img src={rightArrow} />
               </div>
               <Icons icon={logo} />
@@ -100,14 +87,14 @@ const ConfigItem: FC<
             <Space>
               <div
                 style={{ display: 'flex', alignItems: 'center' }}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                 }}
               >
                 <Switch
                   loading={loading}
                   defaultChecked={props?.enable}
-                  onChange={(value) => {
+                  onChange={value => {
                     setLoading(true);
                     enableRule(props?.id, value).finally(() => {
                       setLoading(false);
@@ -124,7 +111,7 @@ const ConfigItem: FC<
                 onConfirm={() => removeConfig(props.id)}
               >
                 <IconDelete
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                   }}
                   style={{
@@ -139,9 +126,7 @@ const ConfigItem: FC<
         }
       >
         <Title heading={6}>
-          {invalid
-            ? title
-            : `GitLab 关联 ${props.work_item_type.name} -> ${props.template.name}`}
+          {invalid ? title : `GitLab 关联 ${props.work_item_type.name} -> ${props.template.name}`}
         </Title>
       </Card>
     </div>

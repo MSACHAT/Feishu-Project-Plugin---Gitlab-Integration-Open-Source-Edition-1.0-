@@ -3,13 +3,14 @@ import React, { useContext, useEffect, useRef, type FC, useState } from 'react';
 import { Modal, Form, Row, Col, Card, Tooltip, Toast, Spin, Typography } from '@douyinfe/semi-ui';
 import type { ModalReactProps } from '@douyinfe/semi-ui/lib/es/modal';
 import WorkTypeSelect from './WorkTypeSelect';
-import { getHelpDocumentHref, getProjectKey } from '../../utils';
-import { IconInfoCircle, IconLink } from 'SemiIcons';
+import { getHelpDocumentHref } from '../../utils/utils';
+import { IconInfoCircle, IconLink } from '@douyinfe/semi-icons';
 import RuleList from './RuleList';
 import { isEmpty } from 'Lodash';
 import { ConfigContext } from '../../context/configContext';
 import { fetchAddRules } from '../../api/service';
 import { FormApi } from '@douyinfe/semi-ui/lib/es/form';
+import useSdkContext from '../../hooks/useSdkContext';
 
 const { Title: SemiTitle, Text } = Typography;
 
@@ -115,7 +116,9 @@ const EditModal: FC<ModalReactProps> = props => {
   const formRef = useRef<Form>(null);
   const { visible, ...rest } = props;
   const [href, setHref] = useState('');
-  const spaceId = getProjectKey();
+  const context = useSdkContext();
+  const mainSpace = context?.mainSpace;
+
   const {
     workItem,
     eventList,
@@ -136,7 +139,7 @@ const EditModal: FC<ModalReactProps> = props => {
     if (isEmpty(errorInfo)) {
       setModalBtnLoading(true);
       const values = formApi.getValues();
-      const rules: any = createParams(workItem, values, eventList, nodes, spaceId);
+      const rules: any = createParams(workItem, values, eventList, nodes, mainSpace?.id);
       if (isEdit && editInfo) {
         rules.id = editInfo.id;
       }
@@ -196,7 +199,7 @@ const EditModal: FC<ModalReactProps> = props => {
                   <WorkTypeSelect
                     formApi={formApi}
                     style={{ width: '100%' }}
-                    spaceId={spaceId}
+                    spaceId={mainSpace?.id || ''}
                     field={'name'}
                     label={'工作项类型'}
                     rules={[
