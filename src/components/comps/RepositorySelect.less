@@ -1,0 +1,177 @@
+.gitlab-repository-wrapper {
+  margin: 0 8px;
+  flex: 0 0 184px;
+  .semi-form-field-error-message {
+    left: 12px !important;
+  }
+}
+
+.gitlab-repository-select {
+  .semi-select {
+    width: 100%;
+  }
+
+  .semi-select-selection .semi-tag-group .semi-tag {
+    border-radius: 3px;
+  }
+
+  .gitlab-repository-selected {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.gitlab-repository-content {
+  width: 240px;
+  border-radius: 6px;
+  color: var(--semi-color-text-0);
+
+  .options-wrapper {
+    padding: 4px 0;
+    max-height: 200px;
+    overflow: auto;
+
+    .gitlab-options-info {
+      display: flex;
+      align-items: center;
+
+      .gitlab-options-name {
+        max-width: 165px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .plugin-scrollbar-thumb {
+      // 新版滚动条规范
+      background: var(--semi-color-text-2); // #6B6C75 grey-5
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+
+    .plugin-scrollbar-style {
+      height: 10px;
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      .plugin-scrollbar-thumb();
+    }
+    &::-webkit-scrollbar {
+      .plugin-scrollbar-style();
+    }
+  }
+
+  .repository-search-wrapper {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(28, 31, 35, 0.08);
+  }
+
+  .repository-search {
+    width: 224px;
+    border-radius: 3px;
+
+    .semi-input-prefix {
+      margin: 0 9px 0 13px;
+    }
+  }
+
+  .divider {
+    border-bottom: 1px solid rgba(28, 31, 35, 0.08);
+  }
+
+  .all-repository-wrapper {
+    height: 36px;
+    padding-bottom: 3px;
+  }
+
+  .all-repository {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(46, 46, 56, 0.06);
+    }
+
+    svg {
+      margin-left: 5px;
+      color: var(--semi-color-text-2);
+    }
+
+    img {
+      width: 10px;
+      height: 9px;
+      margin: 0 13px;
+      visibility: hidden;
+    }
+
+    &.selected img {
+      visibility: visible;
+    }
+  }
+
+  .empty {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 36px;
+    color: var(--semi-color-text-1);
+  }
+
+  .repository-item {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 9px;
+    cursor: pointer;
+
+    img {
+      width: 10px;
+      height: 9px;
+      margin: 0 13px;
+      visibility: hidden;
+    }
+
+    &.selected {
+      img {
+        visibility: visible;
+      }
+    }
+
+    &.highlight {
+      background: rgba(46, 46, 56, 0.06);
+    }
+
+    .gitlab-delete-icon {
+      width: 17px;
+      visibility: hidden;
+    }
+
+    &:hover {
+      background: rgba(46, 46, 56, 0.06);
+
+      .gitlab-delete-icon {
+        visibility: visible;
+      }
+    }
+  }
+
+  .repo-split-tip {
+    padding: 12px 0 8px 16px;
+    color: var(--semi-color-text-2);
+  }
+
+  .add-repo {
+    display: flex;
+    padding: 6px 16px;
+
+    img {
+      margin-right: 8px;
+    }
+  }
+}

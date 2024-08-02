@@ -1,0 +1,65 @@
+.gitlab_custom_top {
+  align-items: center;
+  margin-bottom: -12px;
+  margin-top: 20px;
+
+  span {
+    font-weight: 600;
+  }
+
+  .title {
+    margin-top: 4px;
+    color: var(--semi-color-text-1);
+    font-weight: 600;
+  }
+
+  .semi-form-field {
+    span {
+      font-weight: normal;
+    }
+
+    // .semi-form-field-main {
+    //     position: relative;
+
+    //     .semi-form-field-error-message {
+    //         position: absolute;
+    //         top: 2px;
+    //         left: 14px;
+    //         pointer-events: none;
+    //     }
+    // }
+
+    .semi-form-field-label-text {
+      font-weight: 600;
+      color: var(--semi-color-text-1);
+    }
+  }
+
+  .invalid_template {
+    background-color: var(--color-danger-light-default);
+    border-color: var(--color-danger-light-default);
+    &.active,
+    &.focus,
+    &.visited {
+      background-color: var(--color-danger-light-default);
+      border-color: var(--color-danger-light-default);
+    }
+
+    cursor: not-allowed;
+    .semi-select-selection {
+      cursor: not-allowed;
+      span {
+        font-weight: 600;
+        color: var(--semi-color-danger);
+      }
+    }
+  }
+}
+
+.meego-plugin-gitlab-invalid-message-popover {
+  padding: 6px 10px;
+  line-height: 20px;
+  background: #1c1c23;
+  color: #ffffff;
+  border-radius: 6px;
+}
