@@ -38,5 +38,5 @@ export const getFlowMode = async (params: { spaceId: string; workObjectId: strin
 
 export const getSpace = async (projectKey: string) => {
   const sdk = await sdkManager.getSdkInstance();
-  sdk.Space.load(projectKey);
+  return sdk.Space.load(projectKey);
 };
