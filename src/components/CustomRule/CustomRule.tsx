@@ -7,7 +7,7 @@ import {
   Popconfirm,
 } from '@douyinfe/semi-ui';
 import { isEmpty } from 'Lodash';
-import { getCommonSetting, commonSetting } from '../../api/services';
+import { getCommonSetting, commonSetting } from '../../api/service';
 
 import { sdkManager } from '../../utils';
 
