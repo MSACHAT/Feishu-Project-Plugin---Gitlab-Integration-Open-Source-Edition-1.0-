@@ -25,3 +25,18 @@ export const getHref = async () => {
   const href = await sdk.navigation.getHref();
   return new URL(href);
 };
+
+export const getHelpDocumentHref = async () => {
+  return 'https://project.feishu.cn/b/helpcenter/1ykiuvvj/5svra4v1';
+};
+
+export const getFlowMode = async (params: { spaceId: string; workObjectId: string }) => {
+  const sdk = await sdkManager.getSdkInstance();
+  const workObj = await sdk.WorkObject.load(params);
+  return workObj.flowMode;
+};
+
+export const getSpace = async (projectKey: string) => {
+  const sdk = await sdkManager.getSdkInstance();
+  sdk.Space.load(projectKey);
+};
