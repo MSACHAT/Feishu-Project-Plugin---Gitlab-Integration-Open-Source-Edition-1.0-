@@ -12,7 +12,7 @@ import {
   Tag, Toast,
 } from '@douyinfe/semi-ui';
 import { IconSearch, IconInfoCircle, IconTick } from '@douyinfe/semi-icons';
-import enterSvg from '../../assert/enter.svg';
+import enterSvg from '../../assets/enter.svg';
 import { ConfigContext } from '../../context/configContext';
 import { fetchAddRepo, fetchDelRepo } from '../../api/service';
 import useSdkContext from '../../hooks/useSdkContext';
