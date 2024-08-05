@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ICommonSetting, ResponseWrap } from './types';
 import { APP_KEY } from '../constants';
+import { sdkManager } from '../utils';
 
 interface ResWrapper<T = {}> {
   message: string;
@@ -8,8 +9,9 @@ interface ResWrapper<T = {}> {
   data: T;
 }
 axios.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem(`${APP_KEY}_token`) || '';
+  async config => {
+    const sdk = await sdkManager.getSdkInstance();
+    const token = sdk.storage.getItem(`${APP_KEY}_token`) || '';
 
     config.headers['X-TOKEN'] = token;
     config.headers['x-lark-gw'] = 1;
@@ -59,5 +61,7 @@ interface AuthRes {
  * @returns
  */
 export function authAgree(code: string) {
-  return axios.get<ResWrapper<AuthRes>>(`/login?code=${code}`).then(res => res.data);
+  return axios
+    .post<ResWrapper<AuthRes>>(`http://8.130.34.194:18081/login`, { code: code })
+    .then(res => res.data);
 }
