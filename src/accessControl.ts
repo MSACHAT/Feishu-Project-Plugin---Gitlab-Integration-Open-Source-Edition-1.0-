@@ -7,18 +7,20 @@ import useSdkContext from './hooks/useSdkContext';
 import { sdkManager } from './utils';
 
 // If return false, will call the function `authorize` with a code
-export function isLogin(): boolean {
-  const token: string | null = localStorage.getItem(`${APP_KEY}_token`);
-  const expireTimeStr: string | null = localStorage.getItem(`${APP_KEY}_expire_time`);
+export async function isLogin(): Promise<boolean> {
+  // const sdk = await sdkManager.getSdkInstance();
 
-  if (!token || !expireTimeStr) {
-    return false;
-  }
+  // const token = sdk.storage.getItem(`${APP_KEY}_token`);
+  // const expireTimeStr = sdk.storage.getItem(`${APP_KEY}_expire_time`);
 
-  const expireTime: number = Number(expireTimeStr);
-  if (isNaN(expireTime) || expireTime - Date.now() <= 0) {
-    return false;
-  }
+  // if (!token || !expireTimeStr) {
+  //   return false;
+  // }
+
+  // const expireTime: number = Number(expireTimeStr);
+  // if (isNaN(expireTime) || expireTime - Date.now() <= 0) {
+  //   return false;
+  // }
 
   return true;
 }

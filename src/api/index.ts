@@ -60,8 +60,13 @@ interface AuthRes {
  * @param data
  * @returns
  */
-export function authAgree(code: string) {
-  return axios
-    .post<ResWrapper<AuthRes>>(`http://8.130.34.194:18081/login`, { code: code })
-    .then(res => res.data);
+export async function authAgree(code: string) {
+  const res = await axios.post<ResWrapper<AuthRes>>(
+    `http://8.130.34.194:18081/login`,
+    {
+      code: code,
+    },
+    { headers: { 'Content-Type': 'application/json' } },
+  );
+  return res.data;
 }

@@ -68,22 +68,20 @@ export const fetchSignature = (project_key: string) =>
           signature: string;
         };
       }>
-    >(`/m-api/v1/builtin_app/gitlab/${project_key}/setting`)
+    >(`/config/${project_key}/setting`)
     .then(res => res.data);
 
 // 添加仓库
 export const fetchAddRepo = (project_key: string, repositories: Array<IRepositories>) =>
-  request.post<unknown, ResponseWrap<string>>(
-    `/m-api/v1/builtin_app/gitlab/${project_key}/repository`,
-    { repositories },
-  );
+  request.post<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
+    repositories,
+  });
 
 // 删除仓库
 export const fetchDelRepo = (project_key: string, repoName: string) =>
-  request.delete<unknown, ResponseWrap<string>>(
-    `/m-api/v1/builtin_app/gitlab/${project_key}/repository`,
-    { params: { path_with_namespace: repoName } },
-  );
+  request.delete<unknown, ResponseWrap<string>>(` /config/${project_key}/repository`, {
+    params: { path_with_namespace: repoName },
+  });
 
 // 添加规则
 export const fetchAddRules = rule =>
@@ -104,7 +102,7 @@ export const fetchReposList = (project_key: string) =>
     ResponseWrap<{
       repositories: Array<IRepos>;
     }>
-  >(`/m-api/v1/builtin_app/gitlab/${project_key}/repository`);
+  >(`/config/${project_key}/repository`);
 
 // 插件可见性
 export const fetPluginVisible = (
@@ -146,7 +144,7 @@ export const commonSetting = (
   name = '',
   setting_type = 1,
 ) =>
-  request.post<unknown, ResponseWrap<any>>('/m-api/v1/builtin_app/gitlab/common_setting', {
+  request.post<unknown, ResponseWrap<any>>('/config/config', {
     project_key,
     settings: JSON.stringify(settings),
     name,
@@ -155,12 +153,7 @@ export const commonSetting = (
 
 // 获取自定义流转规则
 export const getCommonSetting = (project_key: string) =>
-  request.get<unknown, ResponseWrap<ICommonSetting>>(
-    '/m-api/v1/builtin_app/gitlab/common_setting',
-    {
-      params: { project_key },
-    },
-  );
+  request.get<unknown, ResponseWrap<ICommonSetting>>(`/config/${project_key}/config`);
 
 export function getBindings(params) {
   return request.get(
