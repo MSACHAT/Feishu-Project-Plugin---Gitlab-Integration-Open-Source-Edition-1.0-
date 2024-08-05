@@ -34,7 +34,7 @@ export const authorize = async (code: string): Promise<boolean> => {
     // resolve(true);
     authAgree(code)
       .then(async res => {
-        const { token, expire_time } = res.data;
+        const { token, expireTime } = res.data;
         // expire_time示例值 7200 秒，这里累加当前时间，再减去五分钟，作为最终失效时间
 
         await sdk.storage.setItem(`${APP_KEY}_token`, token);
@@ -42,7 +42,7 @@ export const authorize = async (code: string): Promise<boolean> => {
 
         await sdk.storage.setItem(
           `${APP_KEY}_expire_time`,
-          (Number(expire_time) * 1000 + Date.now() - 300000).toString(),
+          (Number(expireTime) * 1000 + Date.now() - 300000).toString(),
         );
       })
       .catch(error => {
