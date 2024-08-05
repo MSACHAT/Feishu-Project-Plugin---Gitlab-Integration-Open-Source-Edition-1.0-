@@ -1,27 +1,9 @@
-
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
-import {
-  Collapse,
-  Typography,
-  Table,
-  Toast,
-  Popover,
-  Spin,
-  Icon,
-  Button,
-} from '@douyinfe/semi-ui';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { Collapse, Typography, Table, Toast, Popover, Spin, Icon, Button } from '@douyinfe/semi-ui';
 import { getBindings, deleteBindings } from '../../api/service';
 import './index.less';
 import { IconLink, IconTreeTriangleRight } from '@douyinfe/semi-icons';
-// TODO: 这里历史代码判断了内外网环境可以忽略
 
-// TODO: logEvent也可以忽略
 import { APP_KEY } from '../../constants';
 import useSdkContext from '../../hooks/useSdkContext';
 import { hot } from 'react-hot-loader/root';
@@ -34,7 +16,7 @@ enum ITabType {
 
 const { Text } = Typography;
 
-const formateTime = (time) => {
+const formateTime = time => {
   const date = new Date(time * 1000);
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
@@ -43,26 +25,25 @@ const formateTime = (time) => {
   return `${y}-${m}-${d}`;
 };
 
-const renderUsers = (users) => {
+const renderUsers = users => {
   if (users && !Array.isArray(users)) users = [users];
-  const userEmails = users?.map((user) => user.email) || [];
+  const userEmails = users?.map(user => user.email) || [];
   if (userEmails.length > 1) {
     return (
       <div className="user-cell">
-        <Text
-          ellipsis={{ showTooltip: true }}
-          className="email">
+        <Text ellipsis={{ showTooltip: true }} className="email">
           {userEmails[0]}
         </Text>
         <Popover
           position="top"
           content={
             <div style={{ padding: '12px' }}>
-              {userEmails.map((email) => (
+              {userEmails.map(email => (
                 <div>{`${email}`}</div>
               ))}
             </div>
-          }>
+          }
+        >
           <span className="more">{`+${userEmails.length}`}</span>
         </Popover>
       </div>
@@ -77,31 +58,28 @@ const renderTitle = (type, text, record, maxToolTipWidth?) => {
   if (url || repository?.url) {
     const href = {
       [ITabType.MR]: url || repository?.url,
-      [ITabType.COMMIT]: `${repository?.url || url}/commit/${
-        record?.commit_id
-      }`,
+      [ITabType.COMMIT]: `${repository?.url || url}/commit/${record?.commit_id}`,
       [ITabType.BRANCH]: `${repository?.url || url}/tree/${record?.name}?`,
     };
     return (
       <BaseCell
         className="title-cell link-cell"
         link={{ href: href[type], target: '_blank' }}
-        maxToolTipWidth={maxToolTipWidth}>
+        maxToolTipWidth={maxToolTipWidth}
+      >
         {text}
       </BaseCell>
     );
   } else {
     return (
-      <BaseCell
-        className="title-cell"
-        maxToolTipWidth={maxToolTipWidth}>
+      <BaseCell className="title-cell" maxToolTipWidth={maxToolTipWidth}>
         {text}
       </BaseCell>
     );
   }
 };
 
-const BaseCell = (props) => {
+const BaseCell = props => {
   const { children, maxToolTipWidth, ...res } = props;
   return (
     <Text
@@ -135,7 +113,7 @@ const getWorkItemIdFormUrl = () => {
   return '';
 };
 
-export default  hot(() => {
+export default hot(() => {
   const [bindings, setBindings] = useState<any>([]);
   const { mainSpace } = useSdkContext() || {};
   const project_key = mainSpace?.id ?? '';
@@ -145,15 +123,15 @@ export default  hot(() => {
   const [showTip, setShowTip] = useState(false);
 
   const deleteBinding = useCallback(
-    (id) => {
+    id => {
       deleteBindings({
         project_key,
         workitem_id,
         id,
       })
-        .then((res) => {
+        .then(res => {
           getBindings({ project_key, workitem_id })
-            .then((res) => {
+            .then(res => {
               if (res.data) {
                 setBindings(res.data);
               }
@@ -162,11 +140,9 @@ export default  hot(() => {
               setLoading(false);
             });
         })
-        .catch((e) => {
+        .catch(e => {
           setLoading(false);
-          Toast.error(
-            e.message ||'请求失败，请稍后重试',
-          );
+          Toast.error(e.message || '请求失败，请稍后重试');
         });
     },
     [project_key, workitem_id],
@@ -175,7 +151,7 @@ export default  hot(() => {
   useEffect(() => {
     setLoading(true);
     getBindings({ project_key, workitem_id })
-      .then((res) => {
+      .then(res => {
         if (res.data) {
           setBindings(res.data);
         }
@@ -189,9 +165,7 @@ export default  hot(() => {
   useEffect(() => {
     if (inited) {
       try {
-        const info = JSON.parse(
-          window?.parent?.localStorage?.getItem(APP_KEY) || '{}',
-        );
+        const info = JSON.parse(window?.parent?.localStorage?.getItem(APP_KEY) || '{}');
         if (!info.visited_tab) {
           setShowTip(true);
         }
@@ -216,7 +190,7 @@ export default  hot(() => {
       title: '仓库',
       dataIndex: 'repository',
       width: 84,
-      render: (val) => <BaseCell>{val?.path_with_namespace}</BaseCell>,
+      render: val => <BaseCell>{val?.path_with_namespace}</BaseCell>,
     },
     {
       title: '原分支',
@@ -225,7 +199,7 @@ export default  hot(() => {
       render: (text, record, index) => <BaseCell>{text}</BaseCell>,
     },
     {
-      title:'目标分支',
+      title: '目标分支',
       dataIndex: 'target_branch',
       width: 84,
       render: (text, record, index) => <BaseCell>{text}</BaseCell>,
@@ -243,7 +217,7 @@ export default  hot(() => {
       render: (val, record, index) => renderUsers(val),
     },
     {
-      title:'更新时间',
+      title: '更新时间',
       dataIndex: 'update_time',
       width: 98,
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
@@ -257,7 +231,8 @@ export default  hot(() => {
           className="action"
           link={val}
           disabled={!val}
-          onClick={() => val && deleteBinding(record.id)}>
+          onClick={() => val && deleteBinding(record.id)}
+        >
           {'解绑'}
         </Typography.Text>
       ),
@@ -273,31 +248,31 @@ export default  hot(() => {
         renderTitle(ITabType.COMMIT, text || record?.id || '', record, '185px'),
     },
     {
-      title:'提交信息',
+      title: '提交信息',
       dataIndex: 'message',
       width: 240,
       render: (text, record, index) => <BaseCell>{text}</BaseCell>,
     },
     {
-      title:'仓库',
+      title: '仓库',
       dataIndex: 'repository',
       width: 131,
-      render: (val) => <BaseCell>{val?.path_with_namespace}</BaseCell>,
+      render: val => <BaseCell>{val?.path_with_namespace}</BaseCell>,
     },
     {
-      title:'分支',
+      title: '分支',
       dataIndex: 'branch',
       width: 120,
-      render: (val) => <BaseCell>{val}</BaseCell>,
+      render: val => <BaseCell>{val}</BaseCell>,
     },
     {
-      title:'作者',
+      title: '作者',
       dataIndex: 'author',
       width: 147,
       render: (val, record, index) => renderUsers(val),
     },
     {
-      title:'更新时间',
+      title: '更新时间',
       dataIndex: 'update_time',
       width: 183,
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
@@ -311,7 +286,8 @@ export default  hot(() => {
           className="action"
           link={val}
           disabled={!val}
-          onClick={() => val && deleteBinding(record.id)}>
+          onClick={() => val && deleteBinding(record.id)}
+        >
           {'解绑'}
         </Typography.Text>
       ),
@@ -323,19 +299,16 @@ export default  hot(() => {
       title: '分支信息',
       dataIndex: 'name',
       width: 343,
-      render: (text, record, index) =>
-        renderTitle(ITabType.BRANCH, text, record),
+      render: (text, record, index) => renderTitle(ITabType.BRANCH, text, record),
     },
     {
-      title:'代码仓库',
+      title: '代码仓库',
       dataIndex: 'repository',
       width: 309,
-      render: (text, record, index) => (
-        <BaseCell>{text?.path_with_namespace}</BaseCell>
-      ),
+      render: (text, record, index) => <BaseCell>{text?.path_with_namespace}</BaseCell>,
     },
     {
-      title:'更新时间',
+      title: '更新时间',
       dataIndex: 'update_time',
       width: 252,
       render: (val, record, index) => <BaseCell>{formateTime(val)}</BaseCell>,
@@ -351,7 +324,8 @@ export default  hot(() => {
           disabled={!val}
           onClick={() => {
             val && deleteBinding(record.id);
-          }}>
+          }}
+        >
           {'解绑'}
         </Typography.Text>
       ),
@@ -360,7 +334,7 @@ export default  hot(() => {
 
   const defaultActiveKey = useMemo(() => {
     const keys: string[] = [];
-    Object.keys(bindings).forEach((key) => {
+    Object.keys(bindings).forEach(key => {
       if (bindings[key]?.length > 0) keys.push(key);
     });
     return keys;
@@ -473,25 +447,22 @@ export default  hot(() => {
                   size={'extra-small'}
                   style={{ transform: 'rotate(90deg)' }}
                 />
-              }>
+              }
+            >
               <Collapse.Panel
                 header={`Pull Request${
                   bindings['merge_request']?.length > 0
                     ? ` · ${bindings['merge_request'].length}`
                     : ''
                 } `}
-                itemKey="merge_request">
+                itemKey="merge_request"
+              >
                 <Table
                   bordered
-                  columns={
-                    MRColumns 
-                  }
+                  columns={MRColumns}
                   dataSource={bindings['merge_request']}
                   scroll={{
-                    x:
-                      bindings['merge_request']?.length > 0
-                        ? '105%'
-                        : '100%',
+                    x: bindings['merge_request']?.length > 0 ? '105%' : '100%',
                   }}
                   pagination={false}
                   empty={'暂无数据'}
@@ -499,22 +470,16 @@ export default  hot(() => {
               </Collapse.Panel>
               <Collapse.Panel
                 header={`Commit${
-                  bindings?.commit?.length > 0
-                    ? ` · ${bindings?.commit.length}`
-                    : ''
+                  bindings?.commit?.length > 0 ? ` · ${bindings?.commit.length}` : ''
                 } `}
-                itemKey="commit">
+                itemKey="commit"
+              >
                 <Table
                   bordered
-                  columns={
-                    RenderCommitTable
-                  }
+                  columns={RenderCommitTable}
                   dataSource={bindings?.commit}
                   scroll={{
-                    x:
-                      bindings?.commit?.length > 0 
-                        ? '105%'
-                        : '100%',
+                    x: bindings?.commit?.length > 0 ? '105%' : '100%',
                   }}
                   pagination={false}
                   empty={'暂无数据'}
@@ -522,23 +487,16 @@ export default  hot(() => {
               </Collapse.Panel>
               <Collapse.Panel
                 header={`Branch${
-                  bindings?.branch?.length > 0
-                    ? ` · ${bindings.branch.length}`
-                    : ''
+                  bindings?.branch?.length > 0 ? ` · ${bindings.branch.length}` : ''
                 } `}
-                itemKey="branch">
+                itemKey="branch"
+              >
                 <Table
                   bordered
-                  columns={
-                     RenderBranchTable
-                      
-                  }
+                  columns={RenderBranchTable}
                   dataSource={bindings?.branch}
                   scroll={{
-                    x:
-                      (bindings?.branch?.length ) > 0
-                        ? '105%'
-                        : '100%',
+                    x: bindings?.branch?.length > 0 ? '105%' : '100%',
                   }}
                   pagination={false}
                   empty={'暂无数据'}
@@ -556,4 +514,3 @@ export default  hot(() => {
 function bruteTranslate(arg0: string) {
   throw new Error('Function not implemented.');
 }
-

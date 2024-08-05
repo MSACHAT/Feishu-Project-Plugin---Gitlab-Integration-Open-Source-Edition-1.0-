@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Modal,
-  Form,
-  Toast,
-  Popconfirm,
-} from '@douyinfe/semi-ui';
+import { Button, Modal, Form, Toast, Popconfirm } from '@douyinfe/semi-ui';
 import { isEmpty } from 'Lodash';
 import { getCommonSetting, commonSetting } from '../../api/service';
 import useSdkContext from '../../hooks/useSdkContext';
 
-
-const { mainSpace } = useSdkContext() || {};
-const spaceId = mainSpace?.id ?? '';
 const FormInput = Form.Input;
 const CustomRule = () => {
+  const { mainSpace } = useSdkContext() || {};
+  const spaceId = mainSpace?.id ?? '';
 
   const [visible, setVisible] = useState(false);
   const [formApi, setFormApi] = useState<any>(null);
@@ -25,13 +18,12 @@ const CustomRule = () => {
 
   useEffect(() => {
     if (visible && formApi?.setValues) {
-      getCommonSetting(spaceId).then((res) => {
+      getCommonSetting(spaceId).then(res => {
         if ((res?.data?.settings || []).length > 0) {
           const settings = res?.data?.settings[0];
           formApi.setValues({
             link_rule: JSON.parse(settings?.settings || '{}')?.link_rule || '',
-            trigger_key_words:
-              JSON.parse(settings?.settings || '{}')?.trigger_key_words || '',
+            trigger_key_words: JSON.parse(settings?.settings || '{}')?.trigger_key_words || '',
           });
         }
       });
@@ -57,19 +49,19 @@ const CustomRule = () => {
     }
   };
 
-  const fetchCommonSetting = (values) => {
+  const fetchCommonSetting = values => {
     commonSetting(spaceId, {
       link_rule: values.link_rule,
       trigger_key_words: values.trigger_key_words,
     })
-      .then((res) => {
+      .then(res => {
         if (res.code === 0) {
           setVisible(false);
         } else {
           Toast.error(res.msg);
         }
       })
-      .catch((e) => {
+      .catch(e => {
         Toast.error(e.message);
       });
   };
@@ -80,9 +72,7 @@ const CustomRule = () => {
 
   return (
     <>
-      <Button onClick={showDialog}>
-        全局配置
-      </Button>
+      <Button onClick={showDialog}>全局配置</Button>
       <Modal
         title="工作项联动配置"
         visible={visible}
@@ -97,11 +87,9 @@ const CustomRule = () => {
                 handleOk(2);
               }}
             >
-              <Button type='primary'>
-                重置
-              </Button>
+              <Button type="primary">重置</Button>
             </Popconfirm>
-            <Button type='primary' onClick={() => handleOk()}>
+            <Button type="primary" onClick={() => handleOk()}>
               确认
             </Button>
           </>
@@ -109,24 +97,24 @@ const CustomRule = () => {
       >
         <Form getFormApi={setFormApi}>
           <FormInput
-            field='link_rule'
+            field="link_rule"
             label="自定义前缀"
             placeholder="例如: link-[0-9]+"
             rules={[
               {
                 required: true,
-                message: "此项必填",
+                message: '此项必填',
               },
             ]}
           />
           <FormInput
-            field='trigger_key_words'
+            field="trigger_key_words"
             label="驱动关键字"
             placeholder="多个关键字用英文逗号分隔"
             rules={[
               {
                 required: true,
-                message: "此项必填",
+                message: '此项必填',
               },
             ]}
           />

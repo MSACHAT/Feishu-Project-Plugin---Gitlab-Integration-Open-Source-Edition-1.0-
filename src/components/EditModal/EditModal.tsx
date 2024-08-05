@@ -6,7 +6,7 @@ import WorkTypeSelect from './WorkTypeSelect';
 import { getHelpDocumentHref } from '../../utils/utils';
 import { IconInfoCircle, IconLink } from '@douyinfe/semi-icons';
 import RuleList from './RuleList';
-import { isEmpty } from 'Lodash';
+import { isEmpty } from 'lodash';
 import { ConfigContext } from '../../context/configContext';
 import { fetchAddRules } from '../../api/service';
 import { FormApi } from '@douyinfe/semi-ui/lib/es/form';
