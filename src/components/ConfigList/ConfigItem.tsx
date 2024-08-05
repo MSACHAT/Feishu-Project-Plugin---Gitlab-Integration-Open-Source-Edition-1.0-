@@ -2,8 +2,8 @@ import React, { type FC, useEffect, useState } from 'react';
 import { Popconfirm, Card, Row, Switch, Space, Typography } from '@douyinfe/semi-ui';
 
 import { IconDelete, IconGitlabLogo } from '@douyinfe/semi-icons';
-import rightArrow from '../../assert/right_arrow.svg';
-import logo from '../../assert/logo_meego.png';
+import rightArrow from '../../assets/right_arrow.svg';
+import logo from '../../assets/logo_meego.png';
 import { enableRule } from '../../api/service';
 import { IConfigList } from '../../api/types';
 const { Title } = Typography;
