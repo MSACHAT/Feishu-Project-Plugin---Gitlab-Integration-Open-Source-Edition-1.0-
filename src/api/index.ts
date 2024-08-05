@@ -45,15 +45,15 @@ axios.interceptors.response.use(
 // 获取自定义流转规则
 export const getCommonSetting = (project_key: string) =>
   axios
-    .get<unknown, ResponseWrap<ICommonSetting>>('/m-api/v1/builtin_app/gitlab/common_setting', {
-      params: { project_key },
-    })
+    .get<unknown, ResponseWrap<ICommonSetting>>(
+      `http://8.130.34.194:18081/config/${project_key}/config'`,
+    )
     .then(res => res.data);
 interface AuthRes {
   code: string;
   state: string;
   token: string;
-  expire_time: string;
+  expireTime: string;
 }
 /**
  * Login authentication
