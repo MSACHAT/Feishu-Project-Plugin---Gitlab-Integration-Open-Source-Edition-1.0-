@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Form, Toast, Popconfirm } from '@douyinfe/semi-ui';
-import { isEmpty } from 'Lodash';
+import { isEmpty } from 'lodash';
 import { getCommonSetting, commonSetting } from '../../api/service';
 import useSdkContext from '../../hooks/useSdkContext';
 
